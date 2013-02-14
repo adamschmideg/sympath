@@ -1,0 +1,4 @@
+syntax: glob
+.lein-cljsbuild*
+resources/private
+resources/public
