@@ -34,6 +34,16 @@
 
 ; make spec
 (def spec (wz/make-spec
+  ;; ad-hoc hierarchy building with a tree walker
+  (map-values
+    (fn [v] (if (keyword? v) {:type v} v))
+    {:personal
+      {:main
+        {:birth-date
+          {:year :integer, :month :integer, :day :integer}}
+        {:children
+          [{:name :string, :age :integer}]}}})
+
   (setting "birthDate" :validate (fn [spec db path value]
     (let [age (years-passed value)]
       (when (< age 18)
