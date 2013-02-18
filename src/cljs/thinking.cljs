@@ -8,8 +8,32 @@
       :spouse]
     [:children]])
       
+; utility functions
+(defn- years-passed [date] ,,,)
+
+(defn- expect [fun type]
+  (fn [_ _ _ value]
+    (when-not (fun value)
+      (error :type type
+        :args {:value value}))))
+
+(defn- not-empty-text 
+  (expect #(< 0 (count %)) :not-empty-text))
+
+; make spec
+(def spec (wz/make-spec
+  (setting :validate "birthDate" (fn [spec db path value]
+    (let [age (years-passed value)]
+      (when (< age 18)
+        (error :type :age-under-18 
+          :args {:age age})))))
+
+  (setting :validate "name/given" not-empty-text)))
+
+; set up db
 (def db ,,,)
 
+; facts
 (facts "field-data"
   (fact
     (wz/field-data db "/personal/main/name/middle")
