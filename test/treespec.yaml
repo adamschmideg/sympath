@@ -1,0 +1,28 @@
+
+---
+- module: treespec.core # prepend './' when required by node
+  - describe: private stuff
+    - function: parsePrimitive # camelCase or dashes?
+      - name: string
+        in: ['foo']
+        expect: foo
+      - name: integer
+        in: ['3']
+        expect: 3
+      - name: zero
+        in: ['0']
+        expect: 0
+      - name: float
+        in: ['1.2']
+        expect: 1.2
+    - function: parseDictionaryString
+      - name: plain
+        in: plain
+        expect: plain
+      - in: 'num=2' # name key omitted
+        expect: {num: 2}
+      - in: 'str=other'
+        expect: {str: 'other'}
+      - name: empty
+        in: ''
+        expect: {}

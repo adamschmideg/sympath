@@ -5,3 +5,8 @@ m = require '../resources/public/js/main'
 describe 'environment', ->
   it 'simple call', ->
     assert.equal 5, m.tree.core.add(2, 3)
+
+  describe 'makes more assertions in a loop', ->
+    for i in [1 .. 5]
+      it "checks #{i}", -> 
+        assert.equal 1, 1, i
