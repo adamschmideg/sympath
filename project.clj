@@ -5,7 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [org.clojure/clojurescript "0.0-1450"]]
-  :source-paths ["src/cljs"]
+  :source-paths ["src/clj"]
   :plugins [[lein-cljsbuild "0.3.0"]
             [lein-ring "0.7.0"]]
   :hooks [leiningen.cljsbuild]
@@ -35,6 +35,7 @@
         ["phantomjs"
          "phantom/unit-test.js"
          "resources/private/html/unit-test.html"]},
+     :crossovers ["tree.core"]
      :repl-listen-port 9000,
      :repl-launch-commands
        {"phantom"
