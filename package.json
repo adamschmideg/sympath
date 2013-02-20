@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "cig",
+  "version": "0.0.1",
+  "description": "A Clojure library designed to ... well, that part is up to you.",
+  "author": {
+    "name": "Adam Schmideg",
+    "email": "adam@schmideg.net",
+    "url": "http://adam.schmideg.net"
+  },
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "license": "BSD",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "mocha": "1.5.0",
+    "chai": "1.5.0",
+    "coffee-script": "1.4.0"
+  }
+}

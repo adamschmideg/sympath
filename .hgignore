@@ -1,4 +1,5 @@
 syntax: glob
+*.swp
 .lein-*
 .repl-*
 out
@@ -6,3 +7,4 @@ repl
 target
 resources/private/js
 resources/public/js
+node_modules

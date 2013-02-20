@@ -1,0 +1,5 @@
+
+--ui exports
+--compilers coffee:coffee-script,ls:LiveScript
+--reporter spec
+--ignore-leaks
