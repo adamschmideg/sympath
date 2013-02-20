@@ -6,8 +6,21 @@
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [org.clojure/clojurescript "0.0-1450"]]
   :source-paths ["src/clj"]
+  :test-paths ["test/clj"]
   :plugins [[lein-cljsbuild "0.3.0"]
             [lein-ring "0.7.0"]]
+
+  :profiles {
+    :test {
+      :dependencies [
+        [clj-yaml "0.4.0"]
+        [midje "1.5-alpha3"]
+      ]
+      :plugins [
+        [lein-midje "2.0.1"]
+      ]
+    }
+  }
   :hooks [leiningen.cljsbuild]
   :min-lein-version "2.0.0"
   :cljsbuild
