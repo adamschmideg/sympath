@@ -1,4 +1,8 @@
 syntax: glob
-.lein-cljsbuild*
+.lein-*
+.repl-*
+out
+repl
+target
 resources/private/js
 resources/public/js
