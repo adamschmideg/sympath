@@ -14,22 +14,17 @@
 
 (defn- parse-dictionary-string
   [s]
-  (let [entries (split s #",")]
-    (condp = (count entries)
-      0 :>> {}
-      1 :>>
-        (if (= "*" (first entries))
-          {}
-          (let [[k v] (split (first entries) #"=")]
-            (if v
-              (hash-map (keyword k) (parse-primitive v))
-              k)))
+  (if (re-find #"=" s)
+    (let [entries (split s #",")]
       (reduce
         (fn [memo x]
           (let [[k v] (split x #"=")]
             (assoc memo (keyword k) (parse-primitive v))))
         {}
-        entries))))
+        entries))
+    (if (= "*" s)
+      {}
+      s)))
 
 (defn ^:export add [x y]
   (+ x y))
