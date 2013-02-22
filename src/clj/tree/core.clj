@@ -1,7 +1,7 @@
 (ns tree.core
   (:use
     [clojure.string :only [split]]
-    [common.impl :only [parse-int]]))
+    [common.impl :only [parse-int to-host-form]]))
 
 (defn debug
   [x]
@@ -38,13 +38,15 @@
         it))
     (split s #"/")))
 
-(defn parse-path
+(defn ^:export parse-path
   [s]
-  (parse-xxx s parse-primitive))
+  (to-host-form
+    (parse-xxx s parse-primitive)))
 
-(defn parse-selector
+(defn ^:export parse-selector
   [s]
-  (parse-xxx s parse-dictionary-string))
+  (to-host-form
+    (parse-xxx s parse-dictionary-string)))
 
 (defn ^:export add [x y]
   (+ x y))

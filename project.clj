@@ -20,6 +20,14 @@
         [lein-midje "2.0.1"]
       ]
     }
+    :dev {
+      :dependencies [
+        [midje "1.5-alpha3"]
+      ]
+      :plugins [
+        [lein-midje "2.0.1"]
+      ]
+    }
   }
   :hooks [leiningen.cljsbuild]
   :min-lein-version "2.0.0"
