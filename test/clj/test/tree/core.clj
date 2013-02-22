@@ -5,6 +5,7 @@
     [tree.core :only [add parse-path parse-selector]]))
 
 (testable-privates tree.core
+  get*
   match-selector
   parse-primitive
   parse-dictionary-string)
@@ -40,6 +41,20 @@
     => [:foo 2 {:isActive true, :type "Good"} :bar])
   (fact (parse-selector "/root")
     => [nil :root]))
+
+(facts "About get*"
+  (let [form [{:name "Jack", :age 33}
+              {:name "Mary", :age 22}
+              {:name "Dick", :age 33}]]
+    (tabular
+      (fact
+        (count (get* form (parse-dictionary-string ?selector))) => ?count)
+      ?selector ?count
+      "name=Jack" 1
+      "name=Jack,age=33" 1
+      "name=Jack,age=33,missing=true" 0
+      "age=33" 2
+      "missing=true" 0)))
 
 (future-facts "About match-selector"
   (let [form

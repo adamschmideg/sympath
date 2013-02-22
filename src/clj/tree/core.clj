@@ -51,6 +51,19 @@
 (defn ^:export add [x y]
   (+ x y))
 
+(defn- get*
+  "An extend form of `get` where the key can be a map.  Returns a
+  sequence of results"
+  ([form key] (get* form key nil))
+  ([form key not-found]
+    (if (map? key)
+      (if (sequential? form)
+        ; Check if x has a part equal to `key`
+        (filter (fn [x] (= x (merge x key)))
+          form)
+        not-found)
+      (get form key not-found))))
+    
 (defn- match-selector
   "Checks if a selector matches the node in `form` denoted by `path`."
   [form path selector]
