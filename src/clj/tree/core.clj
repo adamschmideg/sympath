@@ -50,3 +50,18 @@
 
 (defn ^:export add [x y]
   (+ x y))
+
+(defn- match-selector
+  "Checks if a selector matches the node in `form` denoted by `path`."
+  [form path selector]
+  (let [path-vec (parse-path path)
+        selector-vec (parse-selector selector)
+        prepend-len
+          (if (re-find #"^/" selector)
+            0
+            (- (count path-vec) (count selector-vec)))
+        absolute-selector
+          (concat
+            (take (max 0 prepend-len) path-vec)
+            selector-vec)]
+    ))
