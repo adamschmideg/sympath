@@ -15,13 +15,12 @@
 (defn- parse-dictionary-string
   [s]
   (if (re-find #"=" s)
-    (let [entries (split s #",")]
+    (->> (split s #",")
       (reduce
         (fn [memo x]
           (let [[k v] (split x #"=")]
             (assoc memo (keyword k) (parse-primitive v))))
-        {}
-        entries))
+        {}))
     (if (= "*" s)
       {}
       s)))
