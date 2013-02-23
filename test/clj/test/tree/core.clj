@@ -63,18 +63,20 @@
       "age=33" 2
       "missing=true" 0)))
 
-(future-facts "About get-in*"
+(facts "About get-in*"
   (tabular
     (fact
-      (get-in* ?form (parse-selector ?selector)) => ?result)
+      (get-in* ?form ?selector) => ?result)
     ?selector ?form ?result
-    ;"friends/name=Jack/age" 1
-    ;"friends/age=22/name" 1
-    ;"friends/age=33/name" 2
-    ;"friends/*/age" 3
-    "0" [:x] [:x]
-    ;"1/0" [:x [:y :z]] [:y]
-    ;"friends/name=Jack/age" test-form 3
+    [] [:x :y] [[:x :y]]
+    [0] [:x :y] [:x]
+    [1] [:x] nil
+    [:friends {:name "Jack"} :age] test-form [33]
+    [:friends {:age 33} :name] test-form ["Jack" "Dick"]
+    [:friends {:age 33 :dead true} :name] test-form nil
+    [:friends {:age 99} :name] test-form nil
+    [:friends {} :name] test-form ["Jack" "Mary" "Dick"]
+    [:friends {} :age] test-form [33 22 33]
     ))
   
 (future-facts "About match-selector"

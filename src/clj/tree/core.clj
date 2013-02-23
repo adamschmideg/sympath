@@ -62,18 +62,24 @@
         (filter (fn [x] (= x (merge x key)))
           form)
         not-found)
-      (get form key not-found))))
+      (if-let [result (get form key)]
+        [result]
+        not-found))))
+
 
 (defn get-in*
   "Similar to `get-in`, but a key can be a map, and it returns a
   sequence of results."
   ([form ks] (get-in* form ks nil))
   ([form ks not-found]
-    (if-let [[h & t] ks]
-      (map
-        (fn [deeper-form] (get-in* deeper-form t not-found))
-        (get* form h))
-      form)))
+    ;(println "get-in*" ks form)
+    (if-let [[k & next-ks] (seq ks)]
+      (seq ; convert empty list to nil
+        (mapcat
+          (fn [deeper]
+            (get-in* deeper next-ks))
+          (get* form k)))
+      [form])))
     
 (defn- match-selector
   "Checks if a selector matches the node in `form` denoted by `path`."
