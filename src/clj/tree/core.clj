@@ -51,8 +51,8 @@
 (defn ^:export add [x y]
   (+ x y))
 
-(defn- get*
-  "An extend form of `get` where the key can be a map.  Returns a
+(defn get*
+  "An extended form of `get` where the key can be a map.  Returns a
   sequence of results"
   ([form key] (get* form key nil))
   ([form key not-found]
@@ -63,6 +63,17 @@
           form)
         not-found)
       (get form key not-found))))
+
+(defn get-in*
+  "Similar to `get-in`, but a key can be a map, and it returns a
+  sequence of results."
+  ([form ks] (get-in* form ks nil))
+  ([form ks not-found]
+    (if-let [[h & t] ks]
+      (map
+        (fn [deeper-form] (get-in* deeper-form t not-found))
+        (get* form h))
+      form)))
     
 (defn- match-selector
   "Checks if a selector matches the node in `form` denoted by `path`."

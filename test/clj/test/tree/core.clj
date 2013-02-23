@@ -6,9 +6,18 @@
 
 (testable-privates tree.core
   get*
+  get-in*
   match-selector
   parse-primitive
   parse-dictionary-string)
+
+(def test-form
+  {:friends
+    [{:name "Jack", :age 33}
+     {:name "Mary", :age 22}
+     {:name "Dick", :age 33}]
+   :fellows
+    [{:name "Peter", :age 75}]})
 
 (facts "About add"
   (fact (add 2 1) => 3))
@@ -43,9 +52,7 @@
     => [nil :root]))
 
 (facts "About get*"
-  (let [form [{:name "Jack", :age 33}
-              {:name "Mary", :age 22}
-              {:name "Dick", :age 33}]]
+  (let [form (:friends test-form)]
     (tabular
       (fact
         (count (get* form (parse-dictionary-string ?selector))) => ?count)
@@ -56,11 +63,22 @@
       "age=33" 2
       "missing=true" 0)))
 
+(future-facts "About get-in*"
+  (tabular
+    (fact
+      (get-in* ?form (parse-selector ?selector)) => ?result)
+    ?selector ?form ?result
+    ;"friends/name=Jack/age" 1
+    ;"friends/age=22/name" 1
+    ;"friends/age=33/name" 2
+    ;"friends/*/age" 3
+    "0" [:x] [:x]
+    ;"1/0" [:x [:y :z]] [:y]
+    ;"friends/name=Jack/age" test-form 3
+    ))
+  
 (future-facts "About match-selector"
-  (let [form
-          {:list
-            [{:name "Jack", :age 33}
-             {:name "Mary", :age 22}]}
+  (let [form test-form
         path "/list/0/name"]
     (tabular
       (fact

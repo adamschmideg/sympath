@@ -22,6 +22,7 @@
     }
     :dev {
       :dependencies [
+        [org.clojure/tools.trace "0.7.5"]
         [midje "1.5-alpha3"]
       ]
       :plugins [
