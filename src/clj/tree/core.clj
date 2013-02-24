@@ -8,6 +8,16 @@
   (println x)
   x)
 
+(defn- submap?
+  "Checks if a map contains another map"
+  [container submap]
+  (= container (merge container submap)))
+
+(defn absolute?
+  "Whether or not a selector/path is absolute"
+  [s]
+  (re-find #"^/" s))
+
 (defn- parse-primitive
   [s]
   (condp = s
@@ -36,7 +46,8 @@
       (if (string? it)
         (keyword it)
         it))
-    (split s #"/")))
+    (let [entries (split s #"/")]
+      (if (absolute? s) (next entries) entries))))
 
 (defn ^:export parse-path
   [s]
@@ -59,7 +70,7 @@
     (if (map? key)
       (if (sequential? form)
         ; Check if x has a part equal to `key`
-        (filter (fn [x] (= x (merge x key)))
+        (filter (fn [x] (submap? x key))
           form)
         not-found)
       (if-let [result (get form key)]
@@ -87,11 +98,26 @@
   (let [path-vec (parse-path path)
         selector-vec (parse-selector selector)
         prepend-len
-          (if (re-find #"^/" selector)
+          (if (absolute? selector)
             0
             (- (count path-vec) (count selector-vec)))
-        absolute-selector
+        absolute-selector-vec
           (concat
             (take (max 0 prepend-len) path-vec)
             selector-vec)]
-    ))
+    (loop [form form
+           path path-vec
+           selector absolute-selector-vec]
+      (let [[path-head & path-tail] path
+            [selector-head & selector-tail] selector]
+        ;(println "recur in" form path selector)
+        (cond
+          (nil? path-head)
+            true
+          (= path-head selector-head)
+            (recur (first (get* form path-head)) path-tail selector-tail)
+          (and (number? path-head) (map? selector-head))
+            (let [deeper (get form path-head)]
+              (when (submap? deeper selector-head)
+                (recur deeper path-tail selector-tail)))
+          :else false)))))

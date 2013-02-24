@@ -49,7 +49,7 @@
   (fact (parse-selector "foo/2/isActive=true,type=Good/bar")
     => [:foo 2 {:isActive true, :type "Good"} :bar])
   (fact (parse-selector "/root")
-    => [nil :root]))
+    => [:root]))
 
 (facts "About get*"
   (let [form (:friends test-form)]
@@ -79,24 +79,30 @@
     [:friends {} :age] test-form [33 22 33]
     ))
   
-(future-facts "About match-selector"
+(facts "About match-selector"
   (let [form test-form
-        path "/list/0/name"]
+        path "/friends/0/name"]
     (tabular
       (fact
         (match-selector form path ?selector) => ?expected)
       ?selector ?expected
-      "/list/*/name" truthy
-      "/*/*/name" truthy
-      "/*/*/*" truthy
-      "/name" FALSEY
-      "" truthy
-      "/list/0/name" truthy
-      "/list/1/name" FALSEY
-      "/list/2/name" FALSEY
-      "/list/age=33/name" truthy
+      "name" truthy
       "age=33/name" truthy
+      "*/name" truthy
       "age=22/name" FALSEY
       "age=11/name" FALSEY
-      "name" truthy
-      "*/name" truthy)))
+       "/friends/*/name" truthy
+      "/name" FALSEY
+      "/friends/age=33/name" truthy
+      "/friends/0/name" truthy
+      "/friends/1/name" FALSEY
+      "/friends/2/name" FALSEY)))
+
+(future-facts "More about match-selector"
+  (tabular
+    (fact
+      (match-selector test-form "/friends/0/name" ?selector) => ?expected)
+    ?selector ?expected
+    "" truthy
+    "/*/*/name" truthy
+    "/*/*/*" truthy))
