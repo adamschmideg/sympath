@@ -121,3 +121,13 @@
               (when (submap? deeper selector-head)
                 (recur deeper path-tail selector-tail)))
           :else false)))))
+
+(defn- stricter-selector
+  "Compare two selectors which one is stricter"
+  [s1 s2]
+  (let [cmp (compare (absolute? s1) (absolute? s2))]
+    (if-not (zero? cmp)
+      cmp
+      (let [s1 (parse-selector s1)
+            s2 (parse-selector s2)]
+        :?))))

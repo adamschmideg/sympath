@@ -9,7 +9,8 @@
   get-in*
   match-selector
   parse-primitive
-  parse-dictionary-string)
+  parse-dictionary-string
+  stricter-selector)
 
 (def test-form
   {:friends
@@ -106,3 +107,11 @@
     "" truthy
     "/*/*/name" truthy
     "/*/*/*" truthy))
+
+(facts "About stricter-selector"
+  (tabular
+    (fact
+      (stricter-selector ?s1 ?s2) => ?cmp)
+    ?s1 ?s2 ?cmp
+    "foo" "/foo" -1
+    ))
