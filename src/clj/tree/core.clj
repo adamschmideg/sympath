@@ -138,8 +138,24 @@
   [db selector entry]
   (update-in db
     [(absolute? selector) (count (parse-selector selector))]
-    (fn [old k v]
+    (fn [old cur]
       (if old
-        (assoc old k v)
-        {k v}))
-    selector entry))
+        (conj old cur)
+        #{cur}))
+    [selector entry]))
+
+(defn query
+  "Query a `db` to find entries whose selector matches the given form
+  and path."
+  [db form path]
+  (let [match-fn (fn [[sel entry]] (match-selector form path sel))
+        len (count (parse-path path))]
+    (or
+      ; try absolute selectors of the same lengths first
+      (seq (filter match-fn (get-in db [true len])))
+      ; then try relative selectors, from longest to shortest
+      (loop [len len]
+        (when (< 0 len)
+          (if-let [result (seq (filter match-fn (get-in db [false len])))]
+            result
+            (recur (dec len))))))))

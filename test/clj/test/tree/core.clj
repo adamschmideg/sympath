@@ -2,7 +2,7 @@
   (:use
     [midje.sweet]
     [midje.util :only [testable-privates]]
-    [tree.core :only [add parse-path parse-selector update]]))
+    [tree.core :only [add parse-path parse-selector query update]]))
 
 (testable-privates tree.core
   get*
@@ -116,21 +116,33 @@
     "foo" "/foo" -1
     ))
 
-(facts "About update"
-  (fact
-    (-> {}
-      (update "/foo/bar" "foobar")
-      (update "/foo/quux" "quux") 
-      (update "name" "Jack")
-      (update "*" "wildcard")
-      (update "gender=female/name" "Mary")) =>
-    {true
-      {2
-        {"/foo/bar" "foobar"
-          "/foo/quux" "quux"}}
-     false
-      {1
-        {"name" "Jack"
-          "*" "wildcard"}
-       2
-        {"gender=female/name" "Mary"}}}))
+(facts "About update and query"
+  (let [db (-> {}
+              (update "/friends/age=33/name" "old friends")
+              (update "/friends/*/age" "all friends") 
+              (update "name" "name")
+              (update "*" "wildcard")
+              (update "age=22/name" "young"))]
+    (fact "update"
+      db =>
+        {true
+          {3
+            #{["/friends/age=33/name" "old friends"]
+              ["/friends/*/age" "all friends"]}}
+         false
+          {1
+            #{["name" "name"]
+              ["*" "wildcard"]}
+           2
+            #{["age=22/name" "young"]}}})
+    (tabular
+      (fact "query"
+        (map second (query db test-form ?path)) => ?result)
+      ?path ?result
+      "/friends/0/name" ["old friends"]
+      "/friends/1/age" ["all friends"]
+      "/friends/1/name" ["young"]
+      "/fellows/0/name" ["name"]
+      ;"/fellows/1/name" []
+      "/fellows/0/age" []
+        )))
