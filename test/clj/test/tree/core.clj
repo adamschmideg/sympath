@@ -2,7 +2,7 @@
   (:use
     [midje.sweet]
     [midje.util :only [testable-privates]]
-    [tree.core :only [add parse-path parse-selector]]))
+    [tree.core :only [add parse-path parse-selector update]]))
 
 (testable-privates tree.core
   get*
@@ -115,3 +115,22 @@
     ?s1 ?s2 ?cmp
     "foo" "/foo" -1
     ))
+
+(facts "About update"
+  (fact
+    (-> {}
+      (update "/foo/bar" "foobar")
+      (update "/foo/quux" "quux") 
+      (update "name" "Jack")
+      (update "*" "wildcard")
+      (update "gender=female/name" "Mary")) =>
+    {true
+      {2
+        #{["/foo/bar" "foobar"]
+          ["/foo/quux" "quux"]}}
+     false
+      {1
+        #{["name" "Jack"]
+          ["*" "wildcard"]}
+       2
+        #{["gender=female/name" "Mary"]}}}))

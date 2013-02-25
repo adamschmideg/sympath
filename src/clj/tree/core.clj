@@ -16,7 +16,7 @@
 (defn absolute?
   "Whether or not a selector/path is absolute"
   [s]
-  (re-find #"^/" s))
+  (boolean (re-find #"^/" s)))
 
 (defn- parse-primitive
   [s]
@@ -131,3 +131,15 @@
       (let [s1 (parse-selector s1)
             s2 (parse-selector s2)]
         :?))))
+
+(defn update
+  "Update `db` to contain a new entry under the key `selector`.  Return
+  the updated db."
+  [db selector entry]
+  (update-in db
+    [(absolute? selector) (count (parse-selector selector))]
+    (fn [old cur]
+      (if old
+        (conj old cur)
+        #{cur}))
+    [selector entry]))
