@@ -126,11 +126,11 @@
       (update "gender=female/name" "Mary")) =>
     {true
       {2
-        #{["/foo/bar" "foobar"]
-          ["/foo/quux" "quux"]}}
+        {"/foo/bar" "foobar"
+          "/foo/quux" "quux"}}
      false
       {1
-        #{["name" "Jack"]
-          ["*" "wildcard"]}
+        {"name" "Jack"
+          "*" "wildcard"}
        2
-        #{["gender=female/name" "Mary"]}}}))
+        {"gender=female/name" "Mary"}}}))

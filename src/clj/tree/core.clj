@@ -138,8 +138,8 @@
   [db selector entry]
   (update-in db
     [(absolute? selector) (count (parse-selector selector))]
-    (fn [old cur]
+    (fn [old k v]
       (if old
-        (conj old cur)
-        #{cur}))
-    [selector entry]))
+        (assoc old k v)
+        {k v}))
+    selector entry))
