@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "cig",
+  "name": "sympath",
   "version": "0.0.1",
   "description": "A Clojure library designed to ... well, that part is up to you.",
   "author": {

@@ -1,10 +1,10 @@
-(ns test.tree.core
+(ns sympath.test.core
   (:use
     [midje.sweet]
     [midje.util :only [testable-privates]]
-    [tree.core :only [add parse-path parse-selector query update]]))
+    [sympath.core :only [add parse-path parse-selector query update]]))
 
-(testable-privates tree.core
+(testable-privates sympath.core
   get*
   get-in*
   match-selector

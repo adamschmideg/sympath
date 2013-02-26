@@ -1,7 +1,7 @@
-(ns tree.core
+(ns sympath.core
   (:use
     [clojure.string :only [split]]
-    [common.impl :only [parse-int to-host-form]]))
+    [sympath.private :only [parse-int to-host-form]]))
 
 (defn debug
   [x]

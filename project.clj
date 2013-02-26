@@ -1,6 +1,6 @@
-(defproject cig "0.0.1"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+(defproject sympath "0.0.1"
+  :description "A database where paths are matched to selectors"
+  :url "http://bitbucket.org/adamschmideg/sympath"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.4.0"]
@@ -57,7 +57,7 @@
         ["phantomjs"
          "phantom/unit-test.js"
          "resources/private/html/unit-test.html"]},
-     :crossovers ["tree.core"]
+     :crossovers ["sympath.core"]
      :repl-listen-port 9000,
      :repl-launch-commands
        {"phantom"

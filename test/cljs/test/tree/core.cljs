@@ -1,6 +1,6 @@
 (ns test.tree.core
   (:require
-    [tree.core :as tree]))
+    [sympath.core :as tree]))
 
 (defn ^:export parse-primitive-test
   [s]

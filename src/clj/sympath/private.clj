@@ -1,4 +1,4 @@
-(ns common.impl)
+(ns sympath.private)
 
 (defn parse-int
   [s]
