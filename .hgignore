@@ -8,3 +8,5 @@ target
 resources/private/js
 resources/public/js
 node_modules
+.hg
+.git
