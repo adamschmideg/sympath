@@ -150,9 +150,9 @@
   [db form path]
   (let [match-fn (fn [[sel entry]] (match-selector form path sel))
         len (count (parse-path path))]
-    (or
+    (concat
       ; try absolute selectors of the same lengths first
-      (seq (filter match-fn (get-in db [true len])))
+      (filter match-fn (get-in db [true len]))
       ; then try relative selectors, from longest to shortest
       (loop [len len]
         (when (< 0 len)

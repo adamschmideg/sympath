@@ -139,10 +139,10 @@
       (fact "query"
         (map second (query db test-form ?path)) => ?result)
       ?path ?result
-      "/friends/0/name" ["old friends"]
+      "/friends/0/name" ["old friends" "name"]
       "/friends/1/age" ["all friends"]
       "/friends/1/name" ["young"]
       "/fellows/0/name" ["name"]
-      ;"/fellows/1/name" []
       "/fellows/0/age" []
+      ;"/fellows/1/name" []
         )))
