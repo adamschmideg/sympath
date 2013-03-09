@@ -3,6 +3,7 @@
     [clojure.string :only [split]]
     [sympath.private :only [parse-int to-host-form]]))
 
+;; ## Utilities
 (defn debug
   [x]
   (println x)
@@ -18,6 +19,8 @@
   [s]
   (boolean (re-find #"^/" s)))
 
+
+;; ## Handle path and selector
 (defn- parse-primitive
   [s]
   (condp = s
@@ -62,6 +65,8 @@
 (defn ^:export add [x y]
   (+ x y))
 
+
+;; ## Process a structure with a selector
 (defn get*
   "An extended form of `get` where the key can be a map.  Returns a
   sequence of results"
@@ -76,7 +81,6 @@
       (if-let [result (get form key)]
         [result]
         not-found))))
-
 
 (defn get-in*
   "Similar to `get-in`, but a key can be a map, and it returns a
@@ -159,3 +163,16 @@
           (if-let [result (seq (filter match-fn (get-in db [false len])))]
             result
             (recur (dec len))))))))
+
+
+;; ## Almost a validator DSL based on `query`
+(defn- check
+  "Check a node in `form` denoted by `path`.  It checks its type by
+  default and may perform additional checks specified by the value of
+  `:check` in `db`."
+  [db form path]
+  (when-let [spec (->> (query db form path)
+               ;(filter :check)
+               first)]
+    (let [to-check (or (:check spec) (constantly nil))]
+      (to-check db form path))))

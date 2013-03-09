@@ -5,6 +5,7 @@
     [sympath.core :only [add parse-path parse-selector query update]]))
 
 (testable-privates sympath.core
+  check
   get*
   get-in*
   match-selector
@@ -146,3 +147,22 @@
       "/fellows/0/age" []
       ;"/fellows/1/name" []
         )))
+
+(def db 
+  (-> {}
+    (update "/customer/name"
+      {:type "string"})
+    (update "/customer/cart/0/item"
+      {:type "string"})
+    (update "/customer/cart/0/amount"
+      {:type "integer"})))
+
+(def form
+  {:customer
+    {:name "John Doe"}
+   :cart
+    [{:item "Book" :amount 2}
+     {:item "Bread" :amount 1}]})
+
+(facts "About check"
+  (fact (check db form "/customer/cart/0/item") => nil))
