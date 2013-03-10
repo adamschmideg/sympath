@@ -12,6 +12,7 @@
   match-selector
   parse-primitive
   parse-dictionary-string
+  self-and-ancestors
   stricter-selector)
 
 (def test-form
@@ -101,6 +102,14 @@
       "/friends/1/name" FALSEY
       "/friends/2/name" FALSEY)))
 
+(facts "About ancestors"
+  (fact
+    (self-and-ancestors test-form "/friends/1/name") =>
+    ["Mary"
+     {:name "Mary", :age 22}
+     (:friends test-form)
+     test-form]))
+
 (future-facts "More about match-selector"
   (tabular
     (fact
@@ -158,9 +167,9 @@
     (update "/cart/*/amount"
       {:type "integer"
        :check
-        (fn [db form path]
-          (let [value (get-in form path)]
-            (println "check" path value)))})))
+        (fn [db form path ancestors]
+          (when (= 13 (first ancestors))
+            {:error "unlucky", :args {:value (first ancestors)}}))})))
 
 (def form
   {:customer
@@ -170,7 +179,7 @@
      {:item "Bread" :amount 1}]})
 
 (facts "About check"
-  ;(use 'clojure.tools.trace)
-  ;(trace-vars sympath.core/query)
-  ;(check-node db form "/cart/0/amount"))
-  (fact (check-node db form "/cart/0/amount") => nil))
+  (fact "No problem" (check-node db form "/cart/0/amount") => nil)
+  (let [form (assoc-in form [:cart 0 :amount] 13)]
+    (fact "Error" (check-node db form "/cart/0/amount")
+      => {:error "unlucky", :args {:value 13}})))

@@ -67,6 +67,15 @@
 
 
 ;; ## Process a structure with a selector
+(defn- self-and-ancestors
+  "Get a sequence of ancestors starting at current node and going up to
+  the root."
+  [form path]
+  (let [path-vec (parse-path path)]
+    (map
+      #(get-in form (take %1 path-vec))
+      (reverse (range (inc (count path-vec)))))))
+
 (defn get*
   "An extended form of `get` where the key can be a map.  Returns a
   sequence of results"
@@ -177,4 +186,4 @@
               first)]
     (do
       (assert (fn? (:check spec)))
-      ((:check spec) db form path))))
+      ((:check spec) db form path (self-and-ancestors form path)))))
