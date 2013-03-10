@@ -20,3 +20,6 @@
     :else x))
 
 (defn to-host-form [x] (clj->js x))
+
+(defn from-host-form [x] (js->clj x))
+

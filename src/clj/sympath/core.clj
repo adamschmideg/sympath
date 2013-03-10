@@ -187,3 +187,12 @@
     (do
       (assert (fn? (:check spec)))
       ((:check spec) db form path (self-and-ancestors form path)))))
+
+(defn value
+  [db form path]
+  (let [ancestors (self-and-ancestors form path)
+        result {:value (first ancestors)}]
+    (if-let [error (check-node db form path)]
+      (assoc result :error error)
+      result)))
+    

@@ -57,7 +57,7 @@
         ["phantomjs"
          "phantom/unit-test.js"
          "resources/private/html/unit-test.html"]},
-     :crossovers ["sympath.core"]
+     :crossovers ["sympath.core" "sympath.demo"]
      :repl-listen-port 9000,
      :repl-launch-commands
        {"phantom"

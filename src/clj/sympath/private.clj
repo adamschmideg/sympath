@@ -9,3 +9,7 @@
 (defn to-host-form
   [s]
   s)
+
+(defn from-host-form
+  [s]
+  s)
