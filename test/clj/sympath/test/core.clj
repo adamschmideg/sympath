@@ -2,10 +2,11 @@
   (:use
     [midje.sweet]
     [midje.util :only [testable-privates]]
+    ;[clojure.tools.trace :only [trace trace-vars trace-ns]]
     [sympath.core :only [add parse-path parse-selector query update]]))
 
 (testable-privates sympath.core
-  check
+  check-node
   get*
   get-in*
   match-selector
@@ -152,10 +153,14 @@
   (-> {}
     (update "/customer/name"
       {:type "string"})
-    (update "/customer/cart/0/item"
+    (update "/cart/*/item"
       {:type "string"})
-    (update "/customer/cart/0/amount"
-      {:type "integer"})))
+    (update "/cart/*/amount"
+      {:type "integer"
+       :check
+        (fn [db form path]
+          (let [value (get-in form path)]
+            (println "check" path value)))})))
 
 (def form
   {:customer
@@ -165,4 +170,7 @@
      {:item "Bread" :amount 1}]})
 
 (facts "About check"
-  (fact (check db form "/customer/cart/0/item") => nil))
+  ;(use 'clojure.tools.trace)
+  ;(trace-vars sympath.core/query)
+  ;(check-node db form "/cart/0/amount"))
+  (fact (check-node db form "/cart/0/amount") => nil))

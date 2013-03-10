@@ -166,13 +166,15 @@
 
 
 ;; ## Almost a validator DSL based on `query`
-(defn- check
+(defn- check-node
   "Check a node in `form` denoted by `path`.  It checks its type by
   default and may perform additional checks specified by the value of
   `:check` in `db`."
   [db form path]
   (when-let [spec (->> (query db form path)
-               ;(filter :check)
-               first)]
-    (let [to-check (or (:check spec) (constantly nil))]
-      (to-check db form path))))
+              (map second)
+              (filter :check)
+              first)]
+    (do
+      (assert (fn? (:check spec)))
+      ((:check spec) db form path))))
