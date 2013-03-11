@@ -1,7 +1,7 @@
 (ns sympath.core
   (:use
     [clojure.string :only [split]]
-    [sympath.private :only [parse-int to-host-form]]))
+    [sympath.private :only [parse-int]]))
 
 ;; ## Utilities
 (defn debug
@@ -52,15 +52,13 @@
     (let [entries (split s #"/")]
       (if (absolute? s) (next entries) entries))))
 
-(defn ^:export parse-path
+(defn parse-path
   [s]
-  (to-host-form
-    (parse-xxx s parse-primitive)))
+  (parse-xxx s parse-primitive))
 
-(defn ^:export parse-selector
+(defn parse-selector
   [s]
-  (to-host-form
-    (parse-xxx s parse-dictionary-string)))
+  (parse-xxx s parse-dictionary-string))
 
 (defn ^:export add [x y]
   (+ x y))

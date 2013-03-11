@@ -9,6 +9,10 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script src="http://code.jquery.com/qunit/qunit-1.11.0.js"></script>
+  <script type="text/javascript">
+    // to avoid problem of missing deps.js
+    var CLOSURE_NO_DEPS = true;
+  </script>
   <script src="../../public/js/main-debug.js"></script>
   <script src="../js/all.js"></script>
 </body>

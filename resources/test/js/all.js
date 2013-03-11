@@ -3,7 +3,7 @@ test( "hello test", function() {
 });
 
 test("parse_path", function() {
-  deepEqual(sympath.core.parse_path("a/3/b"), ["a", 3, "b"]);
+  deepEqual(sympath.public$.parse_path("a/3/b"), ["a", 3, "b"]);
 });
 
 test("demo", function() {

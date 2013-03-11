@@ -39,7 +39,7 @@
          :compiler
          {:pretty-print true,
           :output-to "resources/public/js/main-debug.js",
-          :optimizations :simple}}
+          :optimizations :whitespace}}
         {:source-paths ["test/cljs"],
          :id "test",
          :compiler
@@ -57,7 +57,7 @@
         ["phantomjs"
          "phantom/unit-test.js"
          "resources/private/html/unit-test.html"]},
-     :crossovers ["sympath.core" "sympath.demo"]
+     :crossovers ["sympath.core" "sympath.demo" "sympath.public"]
      :repl-listen-port 9000,
      :repl-launch-commands
        {"phantom"
