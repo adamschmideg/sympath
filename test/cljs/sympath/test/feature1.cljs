@@ -1,6 +1,6 @@
 (ns ^{:doc    "Feature1 tests"
       :author ""}
-  test.feature1)
+  sympath.test.feature1)
 
 (defn- test1 [ ]
   (.log js/console " feature1.test1")

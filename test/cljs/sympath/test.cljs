@@ -1,6 +1,6 @@
 (ns ^{:doc    "tests for your awesome library"
       :author ""}
-  test
+  sympath.test
   (:use
     [clojure.test :only [is]])
   (:require
