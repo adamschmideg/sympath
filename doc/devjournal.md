@@ -20,3 +20,16 @@ When returning a value from clojurescript, make it usable for
 javascript.  Avoid sequences, keywords, symbols; use `(clj->js form)`
 first.  You will probably need its inverse, `js->clj` when getting
 arguments from javascript.
+
+# API used by gui
+The `menu` function should return a list of objects:
+
+    menuitem = {
+      group: 'cart'
+      name: 'cart_checkout'
+      label: 'Checkout {{id}}'  // yes, it may be a template
+      // status flags
+      available: true
+      mandatory: false
+      visited: true
+    }
