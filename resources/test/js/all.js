@@ -48,7 +48,7 @@ test("demo", function() {
   deepEqual(field, {
     value: 13,
     error: {
-      error: "unlucky"
+      error: "unlucky",
       args: {
         value: 13
       }
