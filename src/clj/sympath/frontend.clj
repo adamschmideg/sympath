@@ -1,4 +1,4 @@
-(ns sympath.public
+(ns sympath.frontend
   (:use
     [sympath.private :only [from-host-form to-host-form]])
   (:require
