@@ -8,6 +8,12 @@
   [x]
   (to-host-form (core/parse-path x)))
 
+(defn ^:export version
+  "Give version info."
+  []
+  (to-host-form
+    {:hash "$HASH$", :date "$DATE$"}))
+
 (defn ^:export menu
   [form]
   (to-host-form
