@@ -1,4 +1,4 @@
-# sympath
+# sympath [![Build Status](https://travis-ci.org/adamschmideg/sympath.png?branch=master)](https://travis-ci.org/adamschmideg/sympath)
 
 A Clojure library designed to ... well, that part is up to you.
 
