@@ -3,10 +3,9 @@
     [midje.sweet]
     [midje.util :only [testable-privates]]
     ;[clojure.tools.trace :only [trace trace-vars trace-ns]]
-    [sympath.core :only [add parse-path parse-selector query update]]))
+    [sympath.core :only [add parse-path parse-selector query update query-keyword]]))
 
 (testable-privates sympath.core
-  check-node
   get*
   get-in*
   match-selector
@@ -167,9 +166,9 @@
     (update "/cart/*/amount"
       {:type "integer"
        :check
-        (fn [db form path ancestors]
-          (when (= 13 (first ancestors))
-            {:error "unlucky", :args {:value (first ancestors)}}))})))
+        (fn [args]
+          (when (= 13 (:value args))
+            {:error "unlucky", :args {:value (:value args)}}))})))
 
 (def form
   {:customer
@@ -179,7 +178,7 @@
      {:item "Bread" :amount 1}]})
 
 (facts "About check"
-  (fact "No problem" (check-node db form "/cart/0/amount") => nil)
+  (fact "No problem" (query-keyword db form "/cart/0/amount" :check) => nil)
   (let [form (assoc-in form [:cart 0 :amount] 13)]
-    (fact "Error" (check-node db form "/cart/0/amount")
+    (fact "Error" (query-keyword db form "/cart/0/amount" :check)
       => {:error "unlucky", :args {:value 13}})))

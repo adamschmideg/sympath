@@ -173,24 +173,16 @@
 
 
 ;; ## Almost a validator DSL based on `query`
-(defn- check-node
-  "Check a node in `form` denoted by `path`.  It checks its type by
-  default and may perform additional checks specified by the value of
-  `:check` in `db`."
-  [db form path]
+(defn query-keyword
+  "Query a `db` and find the best matching entry containing a keyword.
+  If its value is a function, execute it, otherwise just return it."
+  [db form path kw]
   (when-let [spec (->> (query db form path)
               (map second)
               (filter :check)
               first)]
-    (do
-      (assert (fn? (:check spec)))
-      ((:check spec) db form path (self-and-ancestors form path)))))
-
-(defn value
-  [db form path]
-  (let [ancestors (self-and-ancestors form path)
-        result {:value (first ancestors)}]
-    (if-let [error (check-node db form path)]
-      (assoc result :error error)
-      result)))
-    
+    (let [found (get spec kw)
+	  [self & parents] (self-and-ancestors form path)]
+      (if (fn? found)
+	(found {:db db :form form :path path :value self :parents parents})
+	found))))
