@@ -179,7 +179,7 @@
   [db form path kw]
   (when-let [spec (->> (query db form path)
               (map second)
-              (filter :check)
+              (filter kw)
               first)]
     (let [found (get spec kw)
 	  [self & parents] (self-and-ancestors form path)]

@@ -1,7 +1,7 @@
 (ns sympath.demo
   (:use
     [sympath.private :only [from-host-form to-host-form]]
-    [sympath.core :only [update query value]]))
+    [sympath.core :only [update query query-keyword]]))
 
 (def db 
   (-> {}
@@ -19,4 +19,4 @@
 (defn ^:export field
   [form path]
   (to-host-form
-    (value db (from-host-form form) path)))
+    (query-keyword db (from-host-form form) path :value)))
